@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Compiled output
+dist/
+*.js
+*.js.map
+*.d.ts
+*.d.ts.map
+
+# Private: student email list
+EMAILS
+
+# OS and editor files
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
