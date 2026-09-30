@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TypeScript with HTML</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 640px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        line-height: 1.5;
+        color: #1f2328;
+        background: #ffffff;
+      }
+      section {
+        border: 1px solid #d0d7de;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      h2 {
+        margin-top: 0;
+        font-size: 1.1rem;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+        padding: 0.35rem 0.6rem;
+      }
+      .error {
+        color: #cf222e;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #6e7781;
+      }
+      ul {
+        padding-left: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TypeScript with HTML</h1>
+    <p>This page is controlled by <code>main.ts</code>, compiled to <code>dist/main.js</code>.</p>
+
+    <!-- 1. Counter -->
+    <section>
+      <h2>1. Counter</h2>
+      <p>Count: <strong id="count">0</strong></p>
+      <button id="decrement">-1</button>
+      <button id="increment">+1</button>
+      <button id="reset">Reset</button>
+    </section>
+
+    <!-- 2. Greeting form -->
+    <section>
+      <h2>2. Greeting form</h2>
+      <form id="greet-form">
+        <input id="name-input" type="text" placeholder="Your name" />
+        <input id="age-input" type="number" placeholder="Your age" />
+        <button type="submit">Greet me</button>
+      </form>
+      <p id="greeting"></p>
+    </section>
+
+    <!-- 3. To-do list -->
+    <section>
+      <h2>3. To-do list</h2>
+      <form id="todo-form">
+        <input id="todo-input" type="text" placeholder="New task" />
+        <button type="submit">Add</button>
+      </form>
+      <p>
+        Show:
+        <select id="todo-filter">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="done">Done</option>
+        </select>
+      </p>
+      <ul id="todo-list"></ul>
+      <p id="todo-summary"></p>
+    </section>
+
+    <!-- The browser runs JavaScript, not TypeScript, so we load the compiled file -->
+    <script src="dist/main.js" defer></script>
+  </body>
+</html>

@@ -1,12 +1,17 @@
 {
   "scripts": {
     "start": "node types.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit && tsc -p src --noEmit && tsc -p modules --noEmit",
+    "build": "tsc -p src",
+    "watch": "tsc -p src --watch",
+    "modules": "node modules/main.ts",
+    "build:modules": "tsc -p modules"
   },
   "engines": {
     "node": ">=22.18"
   },
   "devDependencies": {
+    "@types/node": "^22.20.4",
     "typescript": "^7.0.2"
   }
 }

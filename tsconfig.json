@@ -39,5 +39,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  // src/ (browser lesson) and modules/ (modules lesson) have their own tsconfig.json
+  "exclude": ["node_modules", "src", "modules"]
 }

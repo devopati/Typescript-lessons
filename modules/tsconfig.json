@@ -1,0 +1,105 @@
+/**
+ * TSCONFIG.JSON: LESSON NOTES
+ *
+ * tsconfig.json tells the TypeScript compiler (tsc):
+ *   - WHICH files belong to the project   ("include", "exclude")
+ *   - HOW to check them                   ("strict" and friends)
+ *   - WHAT JavaScript to produce, and where ("target", "module", "outDir")
+ *
+ * tsc looks for tsconfig.json in the current folder, or in the folder you give it:
+ *   npx tsc                  uses ./tsconfig.json
+ *   npx tsc -p modules       uses modules/tsconfig.json   (-p means "project")
+ *   npx tsc -p modules --showConfig   prints the final settings, including defaults
+ *   npx tsc --init           creates a new tsconfig.json with every option explained
+ *
+ * Unlike normal JSON, tsconfig.json allows comments and trailing commas.
+ */
+{
+  // ------------------------------------------------------------
+  // WHICH FILES
+  // ------------------------------------------------------------
+  // Files to include. "**/*.ts" means every .ts file in this folder and its subfolders.
+  "include": ["**/*.ts"],
+  // Files to skip. The compiled output must be excluded, or tsc would check its own output.
+  "exclude": ["dist", "build"],
+
+  "compilerOptions": {
+    // ------------------------------------------------------------
+    // WHERE THE OUTPUT GOES
+    // ------------------------------------------------------------
+    // The folder your .ts files are in...
+    "rootDir": ".",
+    // ...and the folder the .js files are written to. The folder structure is copied:
+    // modules/utils/strings.ts  becomes  modules/dist/utils/strings.js
+    "outDir": "./dist",
+
+    // ------------------------------------------------------------
+    // WHAT JAVASCRIPT TO PRODUCE
+    // ------------------------------------------------------------
+    // Which JavaScript version to output. Newer features are rewritten for older targets.
+    // Try "es2017": ?. and ?? get rewritten in dist/main.js (see main.ts section 10).
+    // The oldest target TypeScript 7 supports is "es2015".
+    "target": "es2022",
+
+    // Which module system to use for import/export.
+    // "nodenext" follows Node.js's own rules, which means:
+    //   - package.json "type": "module" makes .ts files ES modules (import/export)
+    //   - relative imports must include the file extension: "./math.ts", not "./math"
+    "module": "nodenext",
+
+    // Which built-in JavaScript types exist (Array, Map, Promise, ...).
+    // We run in Node, not a browser, so no "dom": using document or window here is an error.
+    // (The browser lesson in src/ adds "dom".)
+    "lib": ["es2022"],
+
+    // Extra type packages to load from node_modules/@types.
+    // "node" comes from  npm install -D @types/node  and describes what Node.js
+    // provides: console, process, setTimeout, ...
+    // Try removing "node": every console.log becomes an error.
+    "types": ["node"],
+
+    // ------------------------------------------------------------
+    // IMPORTS WITH .ts EXTENSIONS
+    // ------------------------------------------------------------
+    // Node.js runs .ts files directly, and it needs the real file name: import "./math.ts".
+    // This allows writing ".ts" in imports...
+    "allowImportingTsExtensions": true,
+    // ...and this changes "./math.ts" to "./math.js" in the compiled output,
+    // so the files in dist/ still work.
+    "rewriteRelativeImportExtensions": true,
+
+    // ------------------------------------------------------------
+    // TYPE CHECKING
+    // ------------------------------------------------------------
+    // Turns on all the strict checks. Always use this for new projects.
+    // Try it: uncomment the "strict" ERROR lines in main.ts section 10, then set this to false.
+    "strict": true,
+    // Array access like list[0] gives  T | undefined , because the item might not exist.
+    "noUncheckedIndexedAccess": true,
+    // Report variables that are declared but never used.
+    "noUnusedLocals": true,
+
+    // ------------------------------------------------------------
+    // MODULE RULES
+    // ------------------------------------------------------------
+    // Imports that are only types must say so:  import type { Student } from "./models.ts"
+    // The compiler can then delete them without guessing.
+    "verbatimModuleSyntax": true,
+    // Only allow TypeScript syntax that can simply be deleted to get JavaScript.
+    // This is exactly what Node.js can run, so it blocks enum, namespace and
+    // constructor parameter properties.
+    "erasableSyntaxOnly": true,
+
+    // ------------------------------------------------------------
+    // EXTRA OUTPUT FILES
+    // ------------------------------------------------------------
+    // .js.map files: let debuggers show your .ts code instead of the compiled .js.
+    "sourceMap": true,
+    // .d.ts files: type information only, for other projects that import this code.
+    // Open dist/math.d.ts after building to see one.
+    "declaration": true,
+
+    // Don't type-check the library .d.ts files. Faster, and the errors aren't yours to fix.
+    "skipLibCheck": true
+  }
+}
