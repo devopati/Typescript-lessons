@@ -1,0 +1,28 @@
+{
+  // Settings for the browser lesson in src/
+  // Compile with:  npx tsc -p src   (or npm run build)
+  "compilerOptions": {
+    // File Layout: src/*.ts compiles to src/dist/*.js
+    "rootDir": ".",
+    "outDir": "./output",
+
+    // Environment Settings
+    "target": "es2022",
+    // "DOM" gives us the browser types: document, HTMLElement, MouseEvent, ...
+    "lib": ["es2022", "dom"],
+    "types": [],
+    // No import/export in this lesson, so the output is a plain script
+    // that works when you double-click index.html
+    "module": "esnext",
+    "moduleDetection": "auto",
+
+    // Other Outputs
+    "sourceMap": true,
+
+    // Type Checking
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true
+  },
+  "include": ["*.ts"]
+}
