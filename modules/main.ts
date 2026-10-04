@@ -34,13 +34,14 @@
  */
 
 // Imports go at the TOP of the file. Each one is explained in the sections below.
-import { add, multiply, PI } from "./math.ts";
+import { add, multiply, PI, subtract } from "./math.ts";
 import { circleArea as areaOfCircle } from "./math.ts";
 import * as math from "./math.ts";
 import Logger from "./Logger.ts";
+import Timer from "./Timer.ts";
 import { createStudent } from "./models.ts";
-import type { Student, Grade } from "./models.ts";
-import { capitalize, shout, formatMoney, isEven } from "./utils/index.ts";
+import type { Student, Grade, Course } from "./models.ts";
+import { capitalize, shout, formatMoney, isEven, formatDate } from "./utils/index.ts";
 
 // ============================================================
 // 1. SCRIPTS VS MODULES
@@ -247,3 +248,74 @@ console.log("10. Hello,", nickname ?? "friend", "| name length:", students[0]?.n
  *
  * 9. Run  npx tsc -p modules --showConfig.  Which settings appear that aren't in tsconfig.json?
  */
+
+// ============================================================
+// EXERCISE SOLUTIONS
+// ============================================================
+
+// Exercise 1: Use subtract function
+console.log("Ex 1. Subtract:", subtract(10, 4));
+
+// Exercise 2: Use formatDate from barrel import
+console.log("Ex 2. Formatted Date:", formatDate(new Date()));
+
+// Exercise 3: Use Timer class
+const timer = new Timer();
+timer.start();
+let count = 0;
+for (let i = 0; i < 1_000_000; i++) {
+  count += i;
+}
+console.log(`Ex 3. Timer elapsed: ${timer.stop()} ms`);
+
+// Exercise 4: Create a Course instance using type import
+const tsCourse: Course = {
+  title: "TypeScript Foundations",
+  students: [createStudent("Gilbert", 95), createStudent("Wanjiku", 88)]
+};
+console.log("Ex 4. Course created:", tsCourse.title, "with", tsCourse.students.length, "students");
+
+// Exercise 5: Try importing Course WITHOUT "type".
+//import { Course } from "./models.ts";
+
+//Error message: 'Course' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+
+//Setting responsible: "verbatimModuleSyntax": true in tsconfig.json. This forces TypeScript to explicitly distinguish type imports (import type)
+// so the compiler can discard them during compilation without analyzing runtime JS files.
+
+//  Exercise 6: Build with  npm run build
+/* modules/dist/utils/strings.js: Contains plain JavaScript ES module exports with all TypeScript type annotations removed.
+
+modules/dist/math.d.ts: Contains ambient type declarations (declare function add...). Private elements like the internal helper round() are missing because they are not exported.
+
+Path rewriting: In modules/dist/main.js, ./math.ts automatically converts to ./math.js because of "rewriteRelativeImportExtensions": true in tsconfig.json. */
+
+//  Exercise 7: Change "target" to "es2017" and build again.
+
+/* Optional chaining (students[0]?.name) is transformed into ternary conditionals checking for null and undefined.
+
+Nullish coalescing (nickname ?? "friend") is transformed into explicit binary checks (nickname !== null && nickname !== void 0 ? nickname : "friend"). */
+
+//  Exercise 8: Change "outDir" to "./build".
+
+//  Exercise 9: Run  npx tsc -p modules --showConfig.
+/*1. Explicit files Expansion
+TypeScript walked your project directory and generated an exact manifest of every single executable TypeScript file, including subdirectories:
+
+Files inside ./example/ (average.ts, combined.ts, scores.ts, sum.ts, test.ts)
+
+Your newly created Exercise file ./utils/dates.ts
+
+Root-level module files (Timer.ts, Logger.ts, main.ts, math.ts, models.ts)
+
+2. Derived Compiler Options
+moduleResolution: "nodenext": Inferred automatically because "module": "nodenext" requires NodeNext resolution logic.
+
+rootDir: "./": Calculated as the common root directory containing your source files.
+
+Compiler Flags (isolatedModules, moduleDetection, preserveConstEnums, skipLibCheck, sourceMap, types): Populated using default fallback settings or inherited toolchain configurations.
+
+3. Structural Filters (include & exclude) */
+// include: ["**/*.ts"]: Added automatically as the default match rule when no include array is written in tsconfig.json.
+
+// exclude: ["dist", "build"]: Populated to prevent the compiler from scanning compiled build artifacts back into memory.

@@ -24,3 +24,8 @@ export function gradeFor(score: number): Grade {
 export function createStudent(name: string, score: number): Student {
   return { name, score, grade: gradeFor(score) };
 }
+
+export interface Course {
+  title: string;
+  students: Student[];
+}

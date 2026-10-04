@@ -23,3 +23,7 @@ export function circleArea(radius: number): number {
 function round(value: number): number {
   return Math.round(value * 100) / 100;
 }
+
+export function subtract(a: number, b: number): number {
+  return a - b;
+}

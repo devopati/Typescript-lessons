@@ -11,3 +11,4 @@
 
 export { capitalize, shout } from "./strings.ts";
 export { formatMoney, isEven } from "./numbers.ts";
+export * from "./dates.ts";
