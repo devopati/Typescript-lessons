@@ -34,7 +34,7 @@
  */
 
 // Imports go at the TOP of the file. Each one is explained in the sections below.
-import { add, multiply, PI } from "./math.ts";
+import { add, multiply, PI, subtract } from "./math.ts";
 import { circleArea as areaOfCircle } from "./math.ts";
 import * as math from "./math.ts";
 import Logger from "./Logger.ts";
@@ -72,8 +72,7 @@ logger.log("1. This file is a module because it uses import.");
  */
 
 console.log("2. Named imports:", add(2, 3), multiply(4, 5), PI);
-
-// ERROR: import { subtract } from "./math.ts"; subtract(5, 2); // Error: Module has no exported member 'subtract'
+console.log("2. Subtract:", subtract(5, 2));
 
 // ============================================================
 // 3. RENAMING IMPORTS WITH "as"
