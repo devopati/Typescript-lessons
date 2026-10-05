@@ -40,7 +40,7 @@ import * as math from "./math.ts";
 import Logger from "./Logger.ts";
 import { createStudent } from "./models.ts";
 import type { Student, Grade } from "./models.ts";
-import { capitalize, shout, formatMoney, isEven } from "./utils/index.ts";
+import { capitalize, shout, formatMoney, isEven, formatDate } from "./utils/index.ts";
 
 // ============================================================
 // 1. SCRIPTS VS MODULES
@@ -149,6 +149,7 @@ console.log("6. Students with an A:", countGrade(students, "A"));
  */
 
 console.log("7. Barrel imports:", capitalize("typescript"), shout("hello"), formatMoney(1500), isEven(4));
+console.log("7. Formatted date:", formatDate(new Date()));
 
 // ============================================================
 // 8. WHAT ISN'T EXPORTED CAN'T BE IMPORTED
