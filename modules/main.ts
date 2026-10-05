@@ -41,6 +41,7 @@ import Logger from "./Logger.ts";
 import { createStudent } from "./models.ts";
 import type { Student, Grade } from "./models.ts";
 import { capitalize, shout, formatMoney, isEven, formatDate } from "./utils/index.ts";
+import Timer from "./Timer.ts";
 
 // ============================================================
 // 1. SCRIPTS VS MODULES
@@ -213,6 +214,17 @@ console.log("10. First score:", firstScore?.toFixed(1));
 // so TypeScript rewrites them using older code.
 const nickname: string | undefined = undefined;
 console.log("10. Hello,", nickname ?? "friend", "| name length:", students[0]?.name.length);
+
+//Timer execise3
+const timer = new Timer();
+
+timer.start();
+
+for (let i = 0; i < 1000000; i++) {
+  // Do some work
+}
+
+console.log("3. Timer:", timer.stop(), "ms");
 
 // ============================================================
 // EXERCISES
