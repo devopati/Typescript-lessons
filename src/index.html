@@ -37,6 +37,27 @@
         text-decoration: line-through;
         color: #6e7781;
       }
+      .priority {
+        display: inline-block;
+        margin-left: 0.5rem;
+        padding: 0.08rem 0.4rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .priority-low {
+        background: #d0f0c0;
+        color: #205d22;
+      }
+      .priority-medium {
+        background: #fff3bf;
+        color: #8a6d1f;
+      }
+      .priority-high {
+        background: #ffd8d8;
+        color: #b42318;
+      }
       ul {
         padding-left: 1.25rem;
       }
@@ -52,6 +73,7 @@
       <p>Count: <strong id="count">0</strong></p>
       <button id="decrement">-1</button>
       <button id="increment">+1</button>
+      <button id="plus-five">+5</button>
       <button id="reset">Reset</button>
     </section>
 
@@ -71,6 +93,11 @@
       <h2>3. To-do list</h2>
       <form id="todo-form">
         <input id="todo-input" type="text" placeholder="New task" />
+        <select id="todo-priority" aria-label="Priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
         <button type="submit">Add</button>
       </form>
       <p>
@@ -80,6 +107,7 @@
           <option value="active">Active</option>
           <option value="done">Done</option>
         </select>
+        <button type="button" id="clear-done">Clear done</button>
       </p>
       <ul id="todo-list"></ul>
       <p id="todo-summary"></p>

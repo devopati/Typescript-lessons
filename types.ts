@@ -109,7 +109,7 @@ console.log("3. Arrays and tuples:", numbers, names, scores, student);
  * Use unknown when you really don't know the type (e.g. data from an API).
  */
 
-let anything: any = 10;
+let anything: unknown = 10;
 anything = "david";
 anything = true;
 // anything.toFixed(); // compiles fine, but CRASHES when run: true.toFixed is not a function
