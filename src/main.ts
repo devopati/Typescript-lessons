@@ -108,21 +108,25 @@ function getElement<T extends HTMLElement>(selector: string): T {
 
 const countElement = getElement<HTMLElement>("#count");
 const incrementButton = getElement<HTMLButtonElement>("#increment");
+const plusFiveButton = getElement<HTMLButtonElement>("#plus-five");
 const decrementButton = getElement<HTMLButtonElement>("#decrement");
 const resetButton = getElement<HTMLButtonElement>("#reset");
 
 let count: number = 0;
 
 function updateCount(newCount: number): void {
-  count = newCount;
+  count = Math.max(0, Math.min(newCount, 10));
   // textContent is a string, so the number must be converted
   countElement.textContent = count.toString();
   // ERROR: countElement.textContent = count; // Error: Type 'number' is not assignable to type 'string'
 
   decrementButton.disabled = count <= 0; // disabled is a boolean
+  incrementButton.disabled = count >= 10;
+  plusFiveButton.disabled = count >= 10;
 }
 
 incrementButton.addEventListener("click", () => updateCount(count + 1));
+plusFiveButton.addEventListener("click", () => updateCount(count + 5));
 decrementButton.addEventListener("click", () => updateCount(count - 1));
 
 // The event parameter is typed automatically. Hover over "event" to see MouseEvent.
@@ -172,10 +176,17 @@ greetForm.addEventListener("submit", (event: SubmitEvent) => {
     return;
   }
 
-  showMessage(
-    greetingElement,
-    `Hello ${name}! Next year you will be ${age + 1}.`,
-  );
+  if (age < 18) {
+    showMessage(
+      greetingElement,
+      `Hello ${name}! You're ${age}, so you're still under 18.`,
+    );
+  } else {
+    showMessage(
+      greetingElement,
+      `Hello ${name}! Next year you will be ${age + 1}.`,
+    );
+  }
   // If age were still a string, age + 1 would give "201" instead of 21.
   greetForm.reset();
 });
@@ -191,10 +202,13 @@ greetForm.addEventListener("submit", (event: SubmitEvent) => {
  *   4. when something changes, update the data, then call render()
  */
 
+type Priority = "low" | "medium" | "high";
+
 interface Todo {
   id: number;
   text: string;
   done: boolean;
+  priority: Priority;
 }
 
 // A literal type: the filter can only be one of these three values
@@ -202,13 +216,15 @@ type Filter = "all" | "active" | "done";
 
 const todoForm = getElement<HTMLFormElement>("#todo-form");
 const todoInput = getElement<HTMLInputElement>("#todo-input");
+const todoPriority = getElement<HTMLSelectElement>("#todo-priority");
 const todoFilter = getElement<HTMLSelectElement>("#todo-filter");
+const clearDoneButton = getElement<HTMLButtonElement>("#clear-done");
 const todoList = getElement<HTMLUListElement>("#todo-list");
 const todoSummary = getElement<HTMLParagraphElement>("#todo-summary");
 
 let todos: Todo[] = [
-  { id: 1, text: "Learn TypeScript types", done: true },
-  { id: 2, text: "Use TypeScript with HTML", done: false },
+  { id: 1, text: "Learn TypeScript types", done: true, priority: "medium" },
+  { id: 2, text: "Use TypeScript with HTML", done: false, priority: "high" },
 ];
 
 let currentFilter: Filter = "all";
@@ -217,8 +233,8 @@ let nextId: number = 3;
 // ERROR: todos.push({ id: 4, text: "Missing done" }); // Error: Property 'done' is missing
 // ERROR: currentFilter = "finished"; // Error: "finished" is not a Filter
 
-function addTodo(text: string): void {
-  todos.push({ id: nextId, text: text, done: false });
+function addTodo(text: string, priority: Priority): void {
+  todos.push({ id: nextId, text: text, done: false, priority });
   nextId++;
   render();
 }
@@ -232,6 +248,11 @@ function toggleTodo(id: number): void {
 
 function deleteTodo(id: number): void {
   todos = todos.filter((todo) => todo.id !== id);
+  render();
+}
+
+function clearDoneTodos(): void {
+  todos = todos.filter((todo) => !todo.done);
   render();
 }
 
@@ -256,11 +277,16 @@ function createTodoItem(todo: Todo): HTMLLIElement {
     label.classList.add("done");
   }
 
+  const priorityBadge = document.createElement("span");
+  priorityBadge.textContent = todo.priority;
+  priorityBadge.classList.add(`priority-${todo.priority}`);
+  priorityBadge.classList.add("priority");
+
   const deleteButton = document.createElement("button"); // HTMLButtonElement
   deleteButton.textContent = "Delete";
   deleteButton.addEventListener("click", () => deleteTodo(todo.id));
 
-  item.append(checkbox, label, deleteButton);
+  item.append(checkbox, label, priorityBadge, deleteButton);
   return item;
 }
 
@@ -278,8 +304,9 @@ function render(): void {
 todoForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const text = todoInput.value.trim();
+  const priority = todoPriority.value as Priority;
   if (text === "") return;
-  addTodo(text);
+  addTodo(text, priority);
   todoInput.value = "";
   todoInput.focus();
 });
@@ -289,6 +316,10 @@ todoFilter.addEventListener("change", () => {
   // "as" tells TypeScript to trust us (see section 2 for the risk).
   currentFilter = todoFilter.value as Filter;
   render();
+});
+
+clearDoneButton.addEventListener("click", () => {
+  clearDoneTodos();
 });
 
 render();
