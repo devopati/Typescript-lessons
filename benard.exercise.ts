@@ -38,6 +38,23 @@ const next = (light: TrafficLight) => {
 
 next("green"); // returns "green"
 
+const next1 = (light: TrafficLight) => {
+  switch (light) {
+    case "green":
+      return "yellow";
+    case "yellow":
+      return "red";
+    case "red":
+      return "green";
+    default: {
+      const unhandled: never = light;
+      throw new Error(`Unkown light: ${unhandled}`);
+    }
+  }
+};
+
+console.log("1. next: ", next1("green"));
+
 //3. Write a function  formatValue(value: string | number | boolean): string
 // that returns strings in uppercase, numbers with 2 decimal places, and booleans as "yes"/"no".
 
@@ -111,7 +128,6 @@ function lastItem<T>(items: T[]): T | undefined {
 console.log(lastItem([1, 2, 3, 4, 5, 6]));
 
 //7.  Change  let anything: any  in section 4 to  unknown.  Which lines now show errors, and why?
-
 
 // ============================================================
 // 4. ANY VS UNKNOWN
